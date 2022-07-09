@@ -6,14 +6,14 @@ Kubernetes YAML Namespace changer
 Rename namespace for directory:
 
 ```bash
-kyn --namespace acme / \
+kyn --namespace acme ./yamls/ \
   | kubectl apply -f -
 ```
 
 Rename for directory, for specific namespace:
 
 ```bash
-kyn --namespace default=acme / \
+kyn --namespace default=acme ./yamls/ \
   | kubectl apply -f -
 ```
 
@@ -21,7 +21,7 @@ Rename namespace in standard input:
 
 ```bash
 cat kube.yaml | \
-  kyn --namespace acme | \
+  kyn --namespace acme - | \
   kubectl apply -f -
 ```
 
@@ -35,6 +35,6 @@ Or use directly (Go 1.17+):
 
 ```bash
 go run github.com/cardil/kyn@latest \
-  --namespace acme | \
+  --namespace acme ./yamls/ | \
   kubectl apply -f -
 ```
