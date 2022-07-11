@@ -4,6 +4,9 @@ import (
 	"io/fs"
 	"os"
 	"path"
+	"strings"
+
+	"k8s.io/client-go/util/homedir"
 )
 
 func CurrentWorkingDirFS() fs.FS {
@@ -19,9 +22,15 @@ type dirFS struct {
 }
 
 func (d dirFS) Open(name string) (fs.File, error) {
-	p := path.Join("./", d.wd, name)
-	p = path.Clean(p)
-	return d.root.Open(p) //nolint:wrapcheck
+	if strings.HasPrefix(name, "~") {
+		name = path.Join(homedir.HomeDir(), name[1:])
+	}
+	if !strings.HasPrefix(name, "/") {
+		name = path.Join("./", d.wd, name)
+	}
+	name = path.Clean("./" + name)
+
+	return d.root.Open(name) //nolint:wrapcheck
 }
 
 func currentDir() string {

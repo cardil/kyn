@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"strings"
 )
 
 var ErrCouldntReadDir = errors.New("couldn't read dir")
@@ -22,6 +23,9 @@ func (f Dir) Read() ([]io.ReadCloser, error) {
 			return err
 		}
 		if d.IsDir() {
+			return nil
+		}
+		if !strings.HasSuffix(path, ".yaml") && !strings.HasSuffix(path, ".yml") {
 			return nil
 		}
 		file, err := f.Open(path)
