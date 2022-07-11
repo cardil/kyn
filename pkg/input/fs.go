@@ -21,7 +21,7 @@ type dirFS struct {
 func (d dirFS) Open(name string) (fs.File, error) {
 	p := path.Join("./", d.wd, name)
 	p = path.Clean(p)
-	return d.root.Open(p)
+	return d.root.Open(p) //nolint:wrapcheck
 }
 
 func currentDir() string {

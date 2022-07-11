@@ -14,7 +14,10 @@ var (
 	ErrUnexpected          = errors.New("unexpected")
 	ErrCanHaveOnlyOneStdin = errors.New("can have only one stdin")
 	ErrInvalidFilePath     = errors.New("invalid file path")
-	StdinRepresentation    = "-"
+)
+
+const (
+	StdinRepresentation = "-"
 )
 
 type Rename struct {

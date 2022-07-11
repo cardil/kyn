@@ -30,7 +30,11 @@ func (r Rename) readManifest(ctx context.Context) (manifestival.Manifest, error)
 	return m, nil
 }
 
-func (r Rename) readInput(ctx context.Context, input Input, manifest manifestival.Manifest) (manifestival.Manifest, error) {
+func (r Rename) readInput(
+	ctx context.Context,
+	input Input,
+	manifest manifestival.Manifest,
+) (manifestival.Manifest, error) {
 	select {
 	case <-ctx.Done():
 		return manifestival.Manifest{}, ctx.Err() //nolint:wrapcheck

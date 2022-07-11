@@ -5,7 +5,7 @@ import (
 	"github.com/wavesoftware/go-commandline"
 )
 
-var Opts []commandline.Option
+var Opts []commandline.Option //nolint:gochecknoglobals
 
 func (a *App) configureFlags(r *cobra.Command) {
 	fl := r.PersistentFlags()

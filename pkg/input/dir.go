@@ -9,12 +9,14 @@ import (
 
 var ErrCouldntReadDir = errors.New("couldn't read dir")
 
+const nonEmptyDirectoryCapacity = 10
+
 type Dir struct {
 	File
 }
 
 func (f Dir) Read() ([]io.ReadCloser, error) {
-	files := make([]io.ReadCloser, 0, 10)
+	files := make([]io.ReadCloser, 0, nonEmptyDirectoryCapacity)
 	err := fs.WalkDir(f.FS, f.Path, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err

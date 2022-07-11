@@ -40,7 +40,7 @@ func (r Rename) Validate() error {
 	return r.validateUnsupported()
 }
 
-// TODO: remove unsupported validations, when the are implemented
+// TODO: remove unsupported validations, when the are implemented.
 func (r Rename) validateUnsupported() error {
 	if len(r.Namespaces) > 1 {
 		return fmt.Errorf("%w: more then one namespace", ErrNotYetSupported)

@@ -10,6 +10,8 @@ import (
 	"github.com/cardil/kyn/pkg/ns"
 )
 
+const partsOfEquals = 2
+
 func (r Rename) parse(out io.Writer, in io.Reader) (ns.Rename, error) {
 	var err error
 	rn := ns.Rename{
@@ -29,7 +31,7 @@ func (r Rename) parse(out io.Writer, in io.Reader) (ns.Rename, error) {
 func (r Rename) parseNamespaces() []ns.NamespaceRename {
 	names := make([]ns.NamespaceRename, 0, len(r.Namespaces))
 	for _, namespacePair := range r.Namespaces {
-		parts := strings.SplitN(namespacePair, "=", 2)
+		parts := strings.SplitN(namespacePair, "=", partsOfEquals)
 		to := parts[0]
 		from := ns.AnyNamespace
 		if len(parts) > 1 {
