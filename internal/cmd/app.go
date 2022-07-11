@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/cardil/kyn/pkg/cli"
+	"github.com/cardil/kyn/pkg/input"
 	"github.com/spf13/cobra"
 )
 
@@ -20,18 +21,15 @@ func (a *App) Command() *cobra.Command {
   kyn -n foo=bar -n acme -f ./yamls/ | kubectl apply -f -`,
 		Long: "Kubernetes YAML Namespace changer - Change the namespace of " +
 			"Kubernetes YAMLs and output modified files to stdout.",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			err := a.Do(cmd.Context(), cmd.OutOrStdout(), cmd.InOrStdin())
-			cmd.SilenceUsage = errors.Is(err, cli.ErrUnexpected)
-			return err
-		},
+		RunE: a.run,
 	}
 	a.configureFlags(r)
 	return r
 }
 
-func (a App) run(cmd *cobra.Command) error {
+func (a *App) run(cmd *cobra.Command, _ []string) error {
+	a.FS = input.CurrentWorkingDirFS()
 	err := a.Do(cmd.Context(), cmd.OutOrStdout(), cmd.InOrStdin())
 	cmd.SilenceUsage = errors.Is(err, cli.ErrUnexpected)
-	return err
+	return err //nolint:wrapcheck
 }

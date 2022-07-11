@@ -3,17 +3,14 @@ package ns
 import (
 	"context"
 	"io"
-	"io/fs"
 )
+
+const AnyNamespace = ""
 
 type Rename struct {
 	Namespaces []NamespaceRename
-	Files      []InputFile
+	Inputs     []Input
 	Output     io.Writer
-}
-
-func (r Rename) Perform(ctx context.Context) error {
-	return nil
 }
 
 type NamespaceRename struct {
@@ -21,7 +18,23 @@ type NamespaceRename struct {
 	To   string
 }
 
-type InputFile struct {
-	fs.FS
-	Path string
+type Input interface {
+	Name() string
+	Read() ([]io.ReadCloser, error)
+}
+
+func (r Rename) Perform(ctx context.Context) error {
+	if err := r.Validate(); err != nil {
+		return err
+	}
+	m, err := r.readManifest(ctx)
+	if err != nil {
+		return err
+	}
+	m, err = r.injectNamespace(m)
+	if err != nil {
+		return err
+	}
+
+	return r.output(ctx, m.Resources())
 }

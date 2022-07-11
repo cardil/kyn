@@ -3,48 +3,37 @@ package cli
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
+	"io/fs"
 
 	"github.com/cardil/kyn/pkg/ns"
 )
 
 var (
-	ErrUnexpected            = errors.New("unexpected")
-	ErrNoNamespaceToRename   = errors.New("no namespace to rename")
-	ErrNamespaceInvalid      = errors.New("invalid namespace")
-	ErrCanHaveOnlyOneDefault = errors.New("can have only one default namespace")
-	ErrInvalidFilePath       = errors.New("invalid file path")
-	ErrNoFileToRename        = errors.New("no file to rename")
+	ErrUnexpected          = errors.New("unexpected")
+	ErrCanHaveOnlyOneStdin = errors.New("can have only one stdin")
+	ErrInvalidFilePath     = errors.New("invalid file path")
+	StdinRepresentation    = "-"
 )
 
 type Rename struct {
 	Namespaces []string
 	Files      []string
+	fs.FS
 }
 
 func (r Rename) Do(ctx context.Context, out io.Writer, in io.Reader) error {
-	if err := r.validate(); err != nil {
+	var (
+		rename ns.Rename
+		err    error
+	)
+
+	if rename, err = r.parse(out, in); err != nil {
 		return err
 	}
-	if rr, err := r.parse(out, in); err != nil {
-		return err
-	} else {
-		return rr.Perform(ctx)
+	if err = rename.Perform(ctx); err != nil {
+		err = fmt.Errorf("%w: %v", ErrUnexpected, err)
 	}
-}
-
-func (r Rename) validate() error {
-	if len(r.Namespaces) == 0 {
-		return ErrNoNamespaceToRename
-	}
-	if len(r.Files) == 0 {
-		return ErrNoFileToRename
-	}
-	return nil
-}
-
-func (r Rename) parse(out io.Writer, in io.Reader) (ns.Rename, error) {
-	return ns.Rename{
-		Output: out,
-	}, ErrUnexpected
+	return err
 }
