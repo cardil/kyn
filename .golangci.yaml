@@ -17,16 +17,12 @@ linters:
   disable:
     - paralleltest
     - nlreturn
-    - exhaustivestruct
     - wsl
     - godox
-    - scopelint
-    - maligned
-    - interfacer
-    - golint
     - ireturn
     - varnamelen
     - exhaustruct
+    - depguard
 
 issues:
   exclude-rules:

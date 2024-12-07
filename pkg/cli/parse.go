@@ -73,7 +73,7 @@ func (r Rename) toInput(file string, in io.Reader) (ns.Input, error) {
 	}
 	fi, err := fs.Stat(r.FS, file)
 	if err != nil {
-		return nil, fmt.Errorf("%w: `%s`: %v", ErrInvalidFilePath, file, err)
+		return nil, fmt.Errorf("%w: `%s`: %w", ErrInvalidFilePath, file, err)
 	}
 	if fi.IsDir() {
 		return input.Dir{File: input.File{FS: r.FS, Path: file}}, nil
