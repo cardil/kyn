@@ -21,7 +21,7 @@ func (f File) Name() string {
 func (f File) Read() ([]io.ReadCloser, error) {
 	file, err := f.FS.Open(f.Path)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %s: %v", ErrCouldntReadFile, f.Path, err)
+		return nil, fmt.Errorf("%w: %s: %w", ErrCouldntReadFile, f.Path, err)
 	}
 	return []io.ReadCloser{file}, nil
 }

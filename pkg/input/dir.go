@@ -30,14 +30,14 @@ func (f Dir) Read() ([]io.ReadCloser, error) {
 		}
 		file, err := f.Open(path)
 		if err != nil {
-			return fmt.Errorf("%w: %s: %v", ErrCouldntReadFile, path, err)
+			return fmt.Errorf("%w: %s: %w", ErrCouldntReadFile, path, err)
 		}
 
 		files = append(files, file)
 		return nil
 	})
 	if err != nil {
-		return nil, fmt.Errorf("%w: %s: %v", ErrCouldntReadDir, f.Path, err)
+		return nil, fmt.Errorf("%w: %s: %w", ErrCouldntReadDir, f.Path, err)
 	}
 	return files, nil
 }

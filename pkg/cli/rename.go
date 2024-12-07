@@ -36,7 +36,7 @@ func (r Rename) Do(ctx context.Context, out io.Writer, in io.Reader) error {
 		return err
 	}
 	if err = rename.Perform(ctx); err != nil {
-		err = fmt.Errorf("%w: %v", ErrUnexpected, err)
+		err = fmt.Errorf("%w: %w", ErrUnexpected, err)
 	}
 	return err
 }

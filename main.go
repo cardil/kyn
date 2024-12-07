@@ -9,3 +9,8 @@ func main() {
 	app := new(cmd.App)
 	commandline.New(app).ExecuteOrDie(cmd.Opts...)
 }
+
+// RunMain is for testing.
+func RunMain() {
+	main()
+}

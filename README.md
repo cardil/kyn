@@ -31,7 +31,7 @@ cat kube.yaml | \
 go install github.com/cardil/kyn@latest
 ```
 
-Or use directly (Go 1.17+):
+Or use directly (Go 1.22+):
 
 ```bash
 go run github.com/cardil/kyn@latest \
